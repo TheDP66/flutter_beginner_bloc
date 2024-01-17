@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_rust_complete/app_blocs.dart';
 import 'package:flutter_rust_complete/app_events.dart';
 import 'package:flutter_rust_complete/app_states.dart';
+import 'package:flutter_rust_complete/pages/sign_in/sign_in.dart';
 import 'package:flutter_rust_complete/pages/welcome/bloc/welcome_blocs.dart';
 import 'package:flutter_rust_complete/pages/welcome/welcome.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -16,10 +17,16 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // ? MultiBlocProvider example
     return MultiBlocProvider(
       providers: [
-        BlocProvider<WelcomeBloc>(
+        BlocProvider(
           create: (context) => WelcomeBloc(),
+          // lazy: false,
+        ),
+        BlocProvider(
+          create: (context) => AppBlocs(),
+          // lazy: false,
         ),
       ],
       child: ScreenUtilInit(
@@ -28,8 +35,16 @@ class MyApp extends StatelessWidget {
           theme: ThemeData(
             colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
             useMaterial3: true,
+            appBarTheme: const AppBarTheme(
+              elevation: 0,
+              backgroundColor: Colors.white,
+            ),
           ),
           home: const Welcome(),
+          routes: {
+            "myHomePage": (context) => const MyHomePage(),
+            "signIn": (context) => const SignIn(),
+          },
         ),
       ),
     );
@@ -43,13 +58,9 @@ class MyHomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        // TRY THIS: Try changing the color here to a specific color (to
-        // Colors.amber, perhaps?) and trigger a hot reload to see the AppBar
-        // change color while the other colors stay the same.
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        // Here we take the value from the MyHomePage object that was created by
-        // the App.build method, and use it to set our appbar title.
         title: const Text("Flutter Demo Home Page"),
+        centerTitle: true,
       ),
       body: Center(
         child: BlocBuilder<AppBlocs, AppStates>(
@@ -73,12 +84,14 @@ class MyHomePage extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
           FloatingActionButton(
+            heroTag: "heroTagMinus",
             onPressed: () =>
                 BlocProvider.of<AppBlocs>(context).add(Decrement()),
             tooltip: 'Decrement',
             child: const Icon(Icons.remove),
           ),
           FloatingActionButton(
+            heroTag: "heroTagPlus",
             onPressed: () =>
                 BlocProvider.of<AppBlocs>(context).add(Increment()),
             tooltip: 'Increment',

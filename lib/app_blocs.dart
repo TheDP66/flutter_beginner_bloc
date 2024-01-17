@@ -4,6 +4,8 @@ import 'package:flutter_rust_complete/app_states.dart';
 
 class AppBlocs extends Bloc<AppEvents, AppStates> {
   AppBlocs() : super(InitState()) {
+    print("app bloc");
+
     on<Increment>((event, emit) {
       print("I am incrementing");
       emit(AppStates(counter: state.counter + 1));

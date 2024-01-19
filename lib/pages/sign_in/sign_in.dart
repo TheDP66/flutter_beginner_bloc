@@ -22,18 +22,46 @@ class _SignInState extends State<SignIn> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                buildThridPartyLogin(context),
+                buildThirdPartyLogin(context),
                 const Center(
                   child: reusableText(text: "Or use your email account login"),
                 ),
                 Container(
-                  margin: EdgeInsets.only(top: 66.h),
-                  padding: EdgeInsets.only(left: 25.w),
+                  margin: EdgeInsets.only(
+                    top: 50.h,
+                  ),
+                  padding: EdgeInsets.only(
+                    left: 25.w,
+                    right: 25.w,
+                  ),
                   child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      reusableText(text: "Email"),
+                      const reusableText(text: "Email"),
+                      SizedBox(height: 3.h),
+                      const BuildTextField(
+                        hintText: "Enter your email address",
+                        textType: "email",
+                        iconName: "user",
+                      ),
+                      const reusableText(text: "Password"),
+                      SizedBox(height: 3.h),
+                      const BuildTextField(
+                        hintText: "Enter your password",
+                        textType: "password",
+                        iconName: "lock",
+                      ),
                     ],
                   ),
+                ),
+                const forgotPassword(),
+                const BuildLogInAndRegButton(
+                  buttonName: "Log in",
+                  buttonType: "login",
+                ),
+                const BuildLogInAndRegButton(
+                  buttonName: "Sign up",
+                  buttonType: "register",
                 ),
               ],
             ),
